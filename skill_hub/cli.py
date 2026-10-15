@@ -19,6 +19,7 @@ from skill_hub.ui import (
     highlight,
     banner,
     print_table,
+    prettify_path,
 )
 
 VERSION = "1.0.0"
@@ -104,7 +105,7 @@ def cmd_list(hub: Hub, args: argparse.Namespace) -> int:
         print(json.dumps(out, indent=2))
         return 0
 
-    print(f"\n{banner('Installed Skills & Plugins in Skill-Hub', f'Central Store: {hub.store.store_dir}')}\n")
+    print(f"\n{banner('Installed Skills & Plugins in Skill-Hub', f'Central Store: {prettify_path(hub.store.store_dir)}')}\n")
 
     # Skills Table
     print(style("Standalone Skills:", Color.BOLD, Color.CYAN))
@@ -191,7 +192,7 @@ def cmd_doctor(hub: Hub, args: argparse.Namespace) -> int:
     diag = hub.doctor()
 
     print(f"\n{banner('Skill-Hub System Diagnostics')}\n")
-    print(f"Hub Home:             {style(diag['hub_home'], Color.BOLD)}")
+    print(f"Hub Home:             {style(prettify_path(diag['hub_home']), Color.BOLD)}")
     print(f"Sync Mode:            {style(diag['sync_mode'], Color.CYAN)}")
     print(f"Auto-Sync:            {style(str(diag['auto_sync']), Color.GREEN)}")
     print(f"Stored Skills Count:  {style(str(diag['stored_skills_count']), Color.BOLD)}")
@@ -203,8 +204,8 @@ def cmd_doctor(hub: Hub, args: argparse.Namespace) -> int:
     rows = []
     for a in diag.get("adapters", []):
         detected_str = style("YES", Color.GREEN, Color.BOLD) if a["installed"] else style("NO", Color.GRAY)
-        skills_path = a.get("skills_dir") or "None"
-        plugins_path = a.get("plugins_dir") or "None"
+        skills_path = prettify_path(a.get("skills_dir")) if a.get("skills_dir") else "None"
+        plugins_path = prettify_path(a.get("plugins_dir")) if a.get("plugins_dir") else "None"
         rows.append([
             style(a["display_name"], Color.BOLD),
             detected_str,
@@ -224,8 +225,8 @@ def cmd_create(hub: Hub, args: argparse.Namespace) -> int:
 
     try:
         skill_dir = hub.create(name, description=desc)
-        print(success(f"Created skill template at: {style(str(skill_dir), Color.BOLD)}"))
-        print(f"  • Edit instructions in: {style(str(skill_dir / 'SKILL.md'), Color.CYAN)}")
+        print(success(f"Created skill template at: {style(prettify_path(skill_dir), Color.BOLD)}"))
+        print(f"  • Edit instructions in: {style(prettify_path(skill_dir / 'SKILL.md'), Color.CYAN)}")
         if hub.config.auto_sync:
             print(success("Skill automatically synced to all enabled AI tools!"))
         return 0

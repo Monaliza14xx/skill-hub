@@ -24,6 +24,18 @@ def is_color_enabled() -> bool:
         return False
     return sys.stdout.isatty()
 
+def prettify_path(path: object) -> str:
+    """Shorten paths starting with user's home directory to use ~ for privacy and clarity."""
+    if not path:
+        return ""
+    p_str = str(path)
+    home_str = str(os.path.expanduser("~"))
+    if p_str == home_str:
+        return "~"
+    if p_str.startswith(home_str + "/") or p_str.startswith(home_str + "\\"):
+        return "~" + p_str[len(home_str):]
+    return p_str
+
 def style(text: str, *styles: str) -> str:
     if not is_color_enabled() or not styles:
         return text

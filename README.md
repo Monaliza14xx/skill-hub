@@ -53,14 +53,15 @@ flowchart TD
 ## 🚀 Quickstart
 
 ### 1. Installation
-Run the installer:
+Clone or navigate to the repository and run the installer:
 ```bash
-cd /Users/monaliza/Documents/niigata/skill-hub
+git clone https://github.com/Monaliza14xx/skill-hub.git
+cd skill-hub
 ./install.sh
 ```
 Or symlink it manually to your PATH:
 ```bash
-ln -sf /Users/monaliza/Documents/niigata/skill-hub/bin/skill-hub ~/.local/bin/skill-hub
+ln -sf "$(pwd)/bin/skill-hub" ~/.local/bin/skill-hub
 ```
 
 ### 2. Verify AI Tools Detection
