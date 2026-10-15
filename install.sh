@@ -38,7 +38,7 @@ fi
 
 TARGET_BIN="$TARGET_DIR/skill-hub"
 ln -sf "$BIN_PATH" "$TARGET_BIN"
-echo "✓ Installed executable link: $TARGET_BIN -> $BIN_PATH"
+echo "✓ Installed executable link: ${TARGET_BIN/#$HOME/~}"
 
 # Check PATH
 if [[ ":$PATH:" != *":$TARGET_DIR:"* ]]; then
